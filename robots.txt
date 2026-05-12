@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://ployrada-prp.vercel.app/sitemap.xml
