@@ -442,53 +442,257 @@ body {
   margin-right: auto;
   line-height: 1.6;
 }
-.floating-btn {
+
+/* ============================================
+   FLOATING CONTACT WIDGET
+   - Banner "ทักปรึกษาฟรี" (bottom-left, bouncing, → LINE)
+   - Expandable contact menu (bottom-right: Messenger / LINE / Phone)
+   ============================================ */
+
+/* ---- Banner Wrapper (Left side, separate) ---- */
+.consult-banner-wrap {
+  position: fixed;
+  bottom: 24px;
+  left: 24px;
+  z-index: 9999;
+  pointer-events: none;
+}
+
+/* ---- Bouncing Banner "ทักปรึกษาฟรี" (Blue/White theme) ---- */
+.consult-banner {
+  pointer-events: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: white;
+  color: var(--color-primary-dark);
+  padding: 10px 18px 10px 14px;
+  border-radius: 30px;
+  font-family: var(--font-thai);
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  border: 1.5px solid var(--color-primary);
+  box-shadow: 0 6px 20px rgba(71, 185, 227, 0.35);
+  white-space: nowrap;
+  position: relative;
+  animation: bannerBounce 1.8s ease-in-out infinite;
+  transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease);
+}
+.consult-banner:hover {
+  animation-play-state: paused;
+  transform: scale(1.05);
+  box-shadow: 0 10px 28px rgba(71, 185, 227, 0.55);
+}
+.consult-banner::before {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 30px;
+  background: var(--color-primary);
+  z-index: -1;
+  opacity: 0.3;
+  animation: bannerGlow 1.8s ease-in-out infinite;
+}
+.consult-banner .phone-icon {
+  width: 28px;
+  height: 28px;
+  background: var(--color-primary);
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.consult-banner .phone-icon svg {
+  width: 16px;
+  height: 16px;
+  fill: white;
+}
+.consult-banner .free-tag {
+  display: inline-block;
+  background: var(--color-primary);
+  color: white;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 10px;
+  margin-left: 4px;
+  letter-spacing: 0.05em;
+}
+
+/* Banner bouncing animation (เด้งขึ้น-ลง) */
+@keyframes bannerBounce {
+  0%, 100%  { transform: translateY(0); }
+  25%       { transform: translateY(-10px); }
+  50%       { transform: translateY(0); }
+  60%       { transform: translateY(-5px); }
+  75%       { transform: translateY(0); }
+}
+@keyframes bannerGlow {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.35;
+  }
+  50% {
+    transform: scale(1.08);
+    opacity: 0;
+  }
+}
+
+/* ---- Contact Widget (Right side) ---- */
+.contact-widget {
   position: fixed;
   bottom: 24px;
   right: 24px;
-  z-index: 999;
+  z-index: 9999;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 6px;
+  align-items: flex-end;
+  gap: 12px;
+  pointer-events: none; /* Children re-enable */
 }
-.fb-btn {
-  width: 60px; height: 60px;
+
+/* ---- Contact Menu Items (LINE / Messenger / Phone) ---- */
+.contact-menu {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+  pointer-events: none;
+}
+.contact-item {
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  opacity: 0;
+  transform: translateY(20px) scale(0.8);
+  transition: all 0.3s var(--ease);
+  pointer-events: none;
+}
+.contact-widget.is-open .contact-item {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+.contact-widget.is-open .contact-item:nth-child(1) { transition-delay: 0.05s; }
+.contact-widget.is-open .contact-item:nth-child(2) { transition-delay: 0.10s; }
+.contact-widget.is-open .contact-item:nth-child(3) { transition-delay: 0.15s; }
+
+.contact-label {
+  background: white;
+  color: #333;
+  padding: 8px 16px;
+  border-radius: 100px;
+  font-family: var(--font-thai);
+  font-size: 14px;
+  font-weight: 700;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+  white-space: nowrap;
+}
+.contact-icon {
+  width: 56px;
+  height: 56px;
   border-radius: 50%;
-  background: #1877f2;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 6px 20px rgba(24,119,242,0.45);
-  text-decoration: none;
-  position: relative;
-  transition: transform var(--dur) var(--ease);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.2);
+  flex-shrink: 0;
+  transition: transform 0.2s var(--ease);
 }
-.fb-btn:hover { transform: scale(1.1); }
-.fb-btn svg { width: 30px; height: 30px; fill: white; }
-.fb-btn::before {
+.contact-item:hover .contact-icon {
+  transform: scale(1.1);
+}
+.contact-icon.line { background: #06C755; }
+.contact-icon.messenger { background: linear-gradient(135deg, #0099FF 0%, #A033FF 50%, #FF6B6B 100%); }
+.contact-icon.phone { background: #FF6B35; }
+.contact-icon svg { width: 30px; height: 30px; fill: white; }
+
+/* ---- Bouncing Toggle Button ---- */
+.contact-toggle {
+  pointer-events: auto;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 20px rgba(71, 185, 227, 0.5);
+  position: relative;
+  animation: toggleBounce 2.2s ease-in-out infinite;
+  transition: background 0.3s var(--ease);
+}
+.contact-toggle::before {
   content: '';
   position: absolute;
-  inset: -6px;
+  inset: -4px;
   border-radius: 50%;
-  background: rgba(24,119,242,0.3);
+  background: var(--color-primary);
   z-index: -1;
-  animation: pulse 2s infinite;
+  opacity: 0.4;
+  animation: togglePulse 2.2s ease-in-out infinite;
 }
-@keyframes pulse {
-  0% { transform: scale(1); opacity: 0.7; }
-  100% { transform: scale(1.4); opacity: 0; }
+.contact-toggle:hover {
+  animation-play-state: paused;
+  transform: scale(1.05);
 }
-.fb-label {
-  background: var(--color-text);
-  color: white;
-  padding: 4px 10px;
-  border-radius: 12px;
-  font-size: 11px;
-  font-weight: 700;
-  white-space: nowrap;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+.contact-toggle .icon-open,
+.contact-toggle .icon-close {
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  fill: white;
+  transition: opacity 0.25s var(--ease), transform 0.25s var(--ease);
 }
+.contact-toggle .icon-close {
+  opacity: 0;
+  transform: rotate(-90deg);
+}
+.contact-widget.is-open .contact-toggle {
+  animation: none;
+  background: linear-gradient(135deg, #FF4040 0%, #FF6B6B 100%);
+  box-shadow: 0 6px 20px rgba(255, 64, 64, 0.5);
+}
+.contact-widget.is-open .contact-toggle::before {
+  animation: none;
+  opacity: 0;
+}
+.contact-widget.is-open .icon-open {
+  opacity: 0;
+  transform: rotate(90deg);
+}
+.contact-widget.is-open .icon-close {
+  opacity: 1;
+  transform: rotate(0);
+}
+
+/* Toggle bouncing animation (เด้ง) */
+@keyframes toggleBounce {
+  0%, 100% { transform: translateY(0); }
+  20%      { transform: translateY(-10px); }
+  40%      { transform: translateY(0); }
+  60%      { transform: translateY(-5px); }
+  80%      { transform: translateY(0); }
+}
+@keyframes togglePulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.4;
+  }
+  50% {
+    transform: scale(1.4);
+    opacity: 0;
+  }
+}
+
+/* Banner stays visible — it's on the opposite side now */
+
 @media (max-width: 600px) {
   :root {
     --fs-display: 28px;
@@ -501,10 +705,58 @@ body {
   .section { padding: 32px 16px; }
   .cta-section { padding: 48px 20px; }
   .cta-section .price { font-size: 72px; }
-  .floating-btn { bottom: 16px; right: 16px; }
-  .fb-btn { width: 54px; height: 54px; }
-  .fb-btn svg { width: 26px; height: 26px; }
+
+  .contact-widget {
+    bottom: 16px;
+    right: 16px;
+    gap: 10px;
+  }
+  .consult-banner-wrap {
+    bottom: 16px;
+    left: 16px;
+  }
+  .contact-toggle {
+    width: 56px;
+    height: 56px;
+  }
+  .contact-toggle .icon-open,
+  .contact-toggle .icon-close {
+    width: 24px;
+    height: 24px;
+  }
+  .contact-icon {
+    width: 48px;
+    height: 48px;
+  }
+  .contact-icon svg { width: 26px; height: 26px; }
+  .contact-label {
+    font-size: 13px;
+    padding: 6px 14px;
+  }
+  .consult-banner {
+    font-size: 13px;
+    padding: 8px 14px 8px 10px;
+  }
+  .consult-banner .phone-icon {
+    width: 24px;
+    height: 24px;
+  }
+  .consult-banner .phone-icon svg {
+    width: 14px;
+    height: 14px;
+  }
 }
+
+/* Respect users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .consult-banner,
+  .consult-banner::before,
+  .contact-toggle,
+  .contact-toggle::before {
+    animation: none !important;
+  }
+}
+
 .fade-in {
   opacity: 0;
   transform: translateY(20px);
@@ -674,19 +926,101 @@ body {
     * เลขอนุญาตโฆษณา ฆสพ.รย.14/2564
   </p>
 </footer>
-<div class="floating-btn">
-  <a href="https://www.facebook.com/kneehealthcenter" target="_blank" rel="noopener" class="fb-btn" aria-label="Chat on Facebook Messenger">
-    <svg viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.145 2 11.259c0 2.913 1.454 5.512 3.726 7.21V22l3.405-1.869c.909.252 1.871.388 2.869.388 5.523 0 10-4.145 10-9.26C22 6.146 17.523 2 12 2zm.996 12.452L10.49 11.78l-4.892 2.673 5.382-5.713 2.567 2.672 4.83-2.672-5.381 5.713z"/></svg>
+
+<!-- ============================================
+     FLOATING BANNER (Bottom-Left) → LINE
+     ============================================ -->
+<div class="consult-banner-wrap">
+  <a href="https://lin.ee/fmOh4tm" target="_blank" rel="noopener" class="consult-banner" aria-label="ทักปรึกษาฟรีผ่าน LINE @PLOYRADAWELLNESS">
+    <span class="phone-icon">
+      <svg viewBox="0 0 24 24"><path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63h2.386c.346 0 .627.285.627.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.508.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63.346 0 .628.285.628.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.282.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314"/></svg>
+    </span>
+    ทักปรึกษาฟรี
+    <span class="free-tag">FREE</span>
   </a>
-  <span class="fb-label">ทักแชท</span>
 </div>
+
+<!-- ============================================
+     FLOATING CONTACT WIDGET (Bottom-Right)
+     ============================================ -->
+<div class="contact-widget" id="contactWidget">
+
+  <!-- Contact menu (LINE / Messenger / Phone) -->
+  <div class="contact-menu" id="contactMenu">
+
+    <!-- LINE: @PLOYRADAWELLNESS -->
+    <a href="https://lin.ee/fmOh4tm" target="_blank" rel="noopener" class="contact-item" aria-label="ติดต่อทาง LINE @PLOYRADAWELLNESS">
+      <span class="contact-label">@PLOYRADAWELLNESS</span>
+      <span class="contact-icon line">
+        <svg viewBox="0 0 24 24"><path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63h2.386c.346 0 .627.285.627.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.508.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63.346 0 .628.285.628.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.282.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314"/></svg>
+      </span>
+    </a>
+
+    <!-- Messenger -->
+    <a href="https://www.facebook.com/kneehealthcenter" target="_blank" rel="noopener" class="contact-item" aria-label="ติดต่อทาง Messenger">
+      <span class="contact-label">Messenger</span>
+      <span class="contact-icon messenger">
+        <svg viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.145 2 11.259c0 2.913 1.454 5.512 3.726 7.21V22l3.405-1.869c.909.252 1.871.388 2.869.388 5.523 0 10-4.145 10-9.26C22 6.146 17.523 2 12 2zm.996 12.452L10.49 11.78l-4.892 2.673 5.382-5.713 2.567 2.672 4.83-2.672-5.381 5.713z"/></svg>
+      </span>
+    </a>
+
+    <!-- Phone -->
+    <a href="tel:0657196555" class="contact-item" aria-label="โทร 065-719-6555">
+      <span class="contact-label">065-719-6555</span>
+      <span class="contact-icon phone">
+        <svg viewBox="0 0 24 24"><path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56-.35-.12-.74-.03-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z"/></svg>
+      </span>
+    </a>
+  </div>
+
+  <!-- Bouncing Toggle Button -->
+  <button class="contact-toggle" id="contactToggle" aria-label="เปิดเมนูติดต่อ" aria-expanded="false">
+    <!-- Chat bubble icon (open state) -->
+    <svg class="icon-open" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/></svg>
+    <!-- Close X icon (open state) -->
+    <svg class="icon-close" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+  </button>
+</div>
+
 <script>
+// Fade-in observer for sections
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) entry.target.classList.add('visible');
   });
 }, { threshold: 0.1 });
 document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+// Contact widget toggle logic
+(function() {
+  const widget = document.getElementById('contactWidget');
+  const toggle = document.getElementById('contactToggle');
+
+  toggle.addEventListener('click', function(e) {
+    e.stopPropagation();
+    const isOpen = widget.classList.toggle('is-open');
+    toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    toggle.setAttribute('aria-label', isOpen ? 'ปิดเมนูติดต่อ' : 'เปิดเมนูติดต่อ');
+  });
+
+  // Close when clicking outside
+  document.addEventListener('click', function(e) {
+    if (!widget.contains(e.target) && widget.classList.contains('is-open')) {
+      widget.classList.remove('is-open');
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.setAttribute('aria-label', 'เปิดเมนูติดต่อ');
+    }
+  });
+
+  // Close with ESC key
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && widget.classList.contains('is-open')) {
+      widget.classList.remove('is-open');
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.focus();
+    }
+  });
+})();
 </script>
 </body>
 </html>
