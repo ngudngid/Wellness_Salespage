@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!-- SEO Meta Tags -->
 <title>รักษาผมร่วง ผมบาง PRP Hair ระยอง | Ployrada Wellness Clinic — เริ่มต้น 999.-</title>
 <meta name="description" content="โปรแกรม LYO Advanced PRP Plus รักษาผมร่วง ผมบาง ฟื้นฟูรากผมจากต้นตอ ด้วยเทคโนโลยี Advanced Double Spin ที่ Ployrada Wellness Clinic ระยอง โดยแพทย์เฉพาะทาง เห็นผลใน 3-7 วัน ไม่ต้องผ่าตัด ราคาทดลอง 999 บาท">
 <meta name="keywords" content="รักษาผมร่วง, ผมบาง, PRP Hair, ปลูกผม, ระยอง, Ployrada, คลินิกผมร่วงระยอง, LYO Advanced PRP, ฟื้นฟูรากผม">
@@ -484,13 +483,6 @@ body {
   line-height: 1.6;
 }
 
-/* ============================================
-   FLOATING CONTACT WIDGET
-   - Banner "ทักปรึกษาฟรี" (bottom-left, bouncing, → LINE)
-   - Expandable contact menu (bottom-right: Messenger / LINE / Phone)
-   ============================================ */
-
-/* ---- Banner Wrapper (Left side, separate) ---- */
 .consult-banner-wrap {
   position: fixed;
   bottom: 24px;
@@ -499,7 +491,6 @@ body {
   pointer-events: none;
 }
 
-/* ---- Bouncing Banner "ทักปรึกษาฟรี" (Blue/White theme) ---- */
 .consult-banner {
   pointer-events: auto;
   display: inline-flex;
@@ -562,7 +553,6 @@ body {
   letter-spacing: 0.05em;
 }
 
-/* Banner bouncing animation (เด้งขึ้น-ลง) */
 @keyframes bannerBounce {
   0%, 100%  { transform: translateY(0); }
   25%       { transform: translateY(-10px); }
@@ -581,7 +571,6 @@ body {
   }
 }
 
-/* ---- Contact Widget (Right side) ---- */
 .contact-widget {
   position: fixed;
   bottom: 24px;
@@ -591,10 +580,9 @@ body {
   flex-direction: column;
   align-items: flex-end;
   gap: 12px;
-  pointer-events: none; /* Children re-enable */
+  pointer-events: none; 
 }
 
-/* ---- Contact Menu Items (LINE / Messenger / Phone) ---- */
 .contact-menu {
   display: flex;
   flex-direction: column;
@@ -959,9 +947,6 @@ body {
   </p>
 </footer>
 
-<!-- ============================================
-     FLOATING BANNER (Bottom-Left) → LINE
-     ============================================ -->
 <div class="consult-banner-wrap">
   <a href="https://lin.ee/fmOh4tm" target="_blank" rel="noopener" class="consult-banner" aria-label="ทักปรึกษาฟรีผ่าน LINE @PLOYRADAWELLNESS">
     <span class="phone-icon">
@@ -972,15 +957,11 @@ body {
   </a>
 </div>
 
-<!-- ============================================
-     FLOATING CONTACT WIDGET (Bottom-Right)
-     ============================================ -->
 <div class="contact-widget" id="contactWidget">
 
-  <!-- Contact menu (LINE / Messenger / Phone) -->
+  
   <div class="contact-menu" id="contactMenu">
 
-    <!-- LINE: @PLOYRADAWELLNESS -->
     <a href="https://lin.ee/fmOh4tm" target="_blank" rel="noopener" class="contact-item" aria-label="ติดต่อทาง LINE @PLOYRADAWELLNESS">
       <span class="contact-label">@PLOYRADAWELLNESS</span>
       <span class="contact-icon line">
@@ -988,7 +969,6 @@ body {
       </span>
     </a>
 
-    <!-- Messenger: hairployrada (Facebook page เฉพาะหน้า Hair) -->
     <a href="https://www.facebook.com/hairployrada/" target="_blank" rel="noopener" class="contact-item" aria-label="ติดต่อทาง Messenger">
       <span class="contact-label">Messenger</span>
       <span class="contact-icon messenger">
@@ -996,7 +976,6 @@ body {
       </span>
     </a>
 
-    <!-- Phone -->
     <a href="tel:0657196555" class="contact-item" aria-label="โทร 065-719-6555">
       <span class="contact-label">065-719-6555</span>
       <span class="contact-icon phone">
@@ -1005,17 +984,17 @@ body {
     </a>
   </div>
 
-  <!-- Bouncing Toggle Button -->
+
   <button class="contact-toggle" id="contactToggle" aria-label="เปิดเมนูติดต่อ" aria-expanded="false">
-    <!-- Chat bubble icon (open state) -->
+  
     <svg class="icon-open" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/></svg>
-    <!-- Close X icon (open state) -->
+   
     <svg class="icon-close" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
   </button>
 </div>
 
 <script>
-// Fade-in observer for sections
+
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) entry.target.classList.add('visible');
@@ -1023,7 +1002,6 @@ const observer = new IntersectionObserver((entries) => {
 }, { threshold: 0.1 });
 document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
-// Contact widget toggle logic
 (function() {
   const widget = document.getElementById('contactWidget');
   const toggle = document.getElementById('contactToggle');
@@ -1035,7 +1013,6 @@ document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
     toggle.setAttribute('aria-label', isOpen ? 'ปิดเมนูติดต่อ' : 'เปิดเมนูติดต่อ');
   });
 
-  // Close when clicking outside
   document.addEventListener('click', function(e) {
     if (!widget.contains(e.target) && widget.classList.contains('is-open')) {
       widget.classList.remove('is-open');
@@ -1044,7 +1021,6 @@ document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
     }
   });
 
-  // Close with ESC key
   document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape' && widget.classList.contains('is-open')) {
       widget.classList.remove('is-open');
